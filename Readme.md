@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
-* Студент: [Виктория Еременко](https://up.htmlacademy.ru/javascript/30/user/2261441).
-* Наставник: `Неизвестно`.
+- Студент: [Виктория Еременко](https://up.htmlacademy.ru/javascript/30/user/2261441).
+- Наставник: [Андрей Изосимов](https://htmlacademy.ru/profile/id605037).
 
 ---
 
