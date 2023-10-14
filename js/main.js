@@ -84,6 +84,6 @@ const photoDescriptions = Array.from({ length: PHOTO_DESCRIPTION_COUNT }, create
 
 // Проверка
 // console.log(photoDescriptions);
-// console.log(photoDescriptions[2].comments);
-// console.log(photoDescriptions[24].comments);
+// console.log(photoDescriptions[1].comments);
+// console.log(photoDescriptions[25].comments);
 
