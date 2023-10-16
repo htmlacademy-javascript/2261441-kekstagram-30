@@ -1,5 +1,5 @@
-import { createIdGenerator } from './id-generator.mjs';
-import { getRandomInteger, getRandomArrayElement } from './random.mjs';
+import { createIdGenerator } from './id-generator.js';
+import { getRandomInteger, getRandomArrayElement } from './random.js';
 
 const PHOTO_DESCRIPTION_COUNT = 25;
 const COMMENT_MAX_COUNT = 30;
