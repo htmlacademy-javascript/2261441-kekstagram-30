@@ -1,3 +1,6 @@
+import { createIdGenerator } from './id-generator.mjs';
+import { getRandomInteger, getRandomArrayElement } from './random.mjs';
+
 const PHOTO_DESCRIPTION_COUNT = 25;
 const COMMENT_MAX_COUNT = 30;
 
@@ -37,29 +40,13 @@ const DESCRIPTIONS = [
   'Лучше один раз увидеть'
 ];
 
-// Функция для генерации id
-
-const createIdGenerator = () => {
-  let lastGeneratedId = 0;
-  return () => {
-    lastGeneratedId += 1;
-    return lastGeneratedId;
-  };
-};
-
-// Функция для получения случайного числа в диапазоне
-const getRandomInteger = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
-
-// Функция выбирает случайный элемент из массива
-const getRandomArrayElement = (array) => array[getRandomInteger(0, array.length - 1)];
-
-// Функция для генерации id фото
+// Функция генерирует id фото
 const generatePhotoId = createIdGenerator();
 
-// Функция для генерации id комментария
+// Функция генерирует id комментария
 const generateCommentId = createIdGenerator();
 
-// Функция для создания комментария
+// Функция создает комментарий
 const createComment = () => ({
   id: generateCommentId(),
   avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
@@ -67,7 +54,7 @@ const createComment = () => ({
   name: getRandomArrayElement(NAMES),
 });
 
-// Функция для создания описания к фотографии
+// Функция создает описание к фотографии
 const createPhotoDescription = () => {
   const photoId = generatePhotoId();
   return {
@@ -79,11 +66,7 @@ const createPhotoDescription = () => {
   };
 };
 
-// Создалось 25 объектов, id идет по порядку
-const photoDescriptions = Array.from({ length: PHOTO_DESCRIPTION_COUNT }, createPhotoDescription);
+// Функция создает нужное количество описаний
+const createphotoDescriptions = () => Array.from({ length: PHOTO_DESCRIPTION_COUNT }, createPhotoDescription);
 
-// Проверка
-// console.log(photoDescriptions);
-// console.log(photoDescriptions[1].comments);
-// console.log(photoDescriptions[25].comments);
-
+export { createphotoDescriptions };
