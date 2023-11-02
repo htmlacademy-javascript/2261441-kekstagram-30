@@ -1,6 +1,5 @@
 import { createphotoDescriptions } from './data.js';
+import { renderThumbnails } from './thumbnails.js';
 
-const photoDescriptions = createphotoDescriptions();
-
-// Проверка
-// console.log(photoDescriptions);
+// Отрисовываем миниатюры на странице
+renderThumbnails(createphotoDescriptions());
