@@ -1,5 +1,5 @@
-import { createphotoDescriptions } from './data.js';
-import { renderThumbnails } from './thumbnails.js';
+import { createPhotos } from './data.js';
+import { renderGallery } from './gallery.js';
 
-// Отрисовываем миниатюры на странице
-renderThumbnails(createphotoDescriptions());
+// Отрисовываем галерею
+renderGallery(createPhotos());

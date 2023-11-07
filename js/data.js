@@ -1,7 +1,7 @@
 import { createIdGenerator } from './id-generator.js';
 import { getRandomInteger, getRandomArrayElement } from './random.js';
 
-const PHOTO_DESCRIPTION_COUNT = 25;
+const PHOTO_COUNT = 25;
 const COMMENT_MAX_COUNT = 30;
 
 const MESSAGES = [
@@ -40,10 +40,7 @@ const DESCRIPTIONS = [
   'Лучше один раз увидеть'
 ];
 
-// Функция генерирует id фото
 const generatePhotoId = createIdGenerator();
-
-// Функция генерирует id комментария
 const generateCommentId = createIdGenerator();
 
 // Функция создает комментарий
@@ -54,8 +51,8 @@ const createComment = () => ({
   name: getRandomArrayElement(NAMES),
 });
 
-// Функция создает описание к фотографии
-const createPhotoDescription = () => {
+// Функция создает фотографию с набором свойств
+const createPhoto = () => {
   const photoId = generatePhotoId();
   return {
     id: photoId,
@@ -67,6 +64,6 @@ const createPhotoDescription = () => {
 };
 
 // Функция создает нужное количество описаний
-const createphotoDescriptions = () => Array.from({ length: PHOTO_DESCRIPTION_COUNT }, createPhotoDescription);
+const createPhotos = () => Array.from({ length: PHOTO_COUNT }, createPhoto);
 
-export { createphotoDescriptions };
+export { createPhotos };
