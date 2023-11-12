@@ -12,6 +12,9 @@ const commentTemplate = document.querySelector('#comment')
   .querySelector('.social__comment');
 const photoModalCloseButton = photoModal.querySelector('.big-picture__cancel');
 
+let commentsShownCounter = 0;
+let comments = [];
+
 // Функция для оформления одного комментария для публикации
 const getComment = ({ avatar, message, name }) => {
   const comment = commentTemplate.cloneNode(true);
@@ -22,9 +25,6 @@ const getComment = ({ avatar, message, name }) => {
 
   return comment;
 };
-
-let commentsShownCounter = 0;
-let comments = [];
 
 // Функция для отрисовки комментариев к фото с загрузкой по 5 шт
 const renderComments = () => {
