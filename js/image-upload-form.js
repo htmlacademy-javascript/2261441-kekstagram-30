@@ -1,3 +1,5 @@
+import { resetScale } from './image-scale.js';
+
 const COMMENT_MAX_LENGTH = 140;
 const HASHTAGS_MAX_COUNT = 5;
 
@@ -28,6 +30,7 @@ const showImageEditor = () => {
 
 const hideImageEditor = () => {
   imageUploadForm.reset();
+  resetScale();
   pristine.reset();
   imageEditor.classList.add('hidden');
   body.classList.remove('modal-open');
