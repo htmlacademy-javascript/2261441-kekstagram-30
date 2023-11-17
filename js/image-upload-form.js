@@ -1,3 +1,6 @@
+import { resetScale } from './image-scale.js';
+import { initEffect, resetEffect } from './image-filters.js';
+
 const COMMENT_MAX_LENGTH = 140;
 const HASHTAGS_MAX_COUNT = 5;
 
@@ -23,28 +26,24 @@ const pristine = new Pristine(imageUploadForm, {
 const showImageEditor = () => {
   imageEditor.classList.remove('hidden');
   body.classList.add('modal-open');
-
   document.addEventListener('keydown', onDocumentKeydown);
 };
 
 const hideImageEditor = () => {
+  imageUploadForm.reset();
+  resetScale();
+  resetEffect();
+  pristine.reset();
   imageEditor.classList.add('hidden');
   body.classList.remove('modal-open');
-
-  imageUploadForm.reset();
-
   document.removeEventListener('keydown', onDocumentKeydown);
 };
 
 function onDocumentKeydown(evt) {
   const isInFocus = (document.activeElement === commentInput || document.activeElement === hashtagsInput);
-  if (evt.key === 'Escape') {
-    if (isInFocus) {
-      evt.stopPropagation();
-    } else {
-      evt.preventDefault();
-      hideImageEditor();
-    }
+  if (evt.key === 'Escape' && !isInFocus) {
+    evt.preventDefault();
+    hideImageEditor();
   }
 }
 
@@ -60,19 +59,19 @@ imageUploadInput.addEventListener('change', onImageUploadFormChange);
 imageEditorCloseButton.addEventListener('click', onImageEditorCloseButtonClick);
 
 // Валидация формы
+const normalizeHashtags = (string) =>
+  string.trim().split(' ').filter((hashtag) => Boolean(hashtag.length));
 
 const validateHashtagsCount = (string) => {
-  const hashtags = string.trim().split(' ');
+  const hashtags = normalizeHashtags(string);
   return hashtags.length <= HASHTAGS_MAX_COUNT;
 };
 
 const validateHashtags = (string) => {
-  if (string.trim().length !== 0) {
-    const hashtags = string.trim().split(' ');
-    for (const hashtag of hashtags) {
-      if (!hashtagPattern.test(hashtag)) {
-        return false;
-      }
+  const hashtags = normalizeHashtags(string);
+  for (const hashtag of hashtags) {
+    if (!hashtagPattern.test(hashtag)) {
+      return false;
     }
   }
   return true;
@@ -80,7 +79,7 @@ const validateHashtags = (string) => {
 
 // Проверка на одинаковые элементы в массиве
 const validateUniqueHashtags = (string) => {
-  const hashtags = string.trim().split(' ');
+  const hashtags = normalizeHashtags(string);
   const lowerCaseHashtags = hashtags.map((hashtag) => hashtag.toLowerCase());
   const uniqueHashtags = new Set(lowerCaseHashtags);
   return lowerCaseHashtags.length === uniqueHashtags.size;
@@ -103,7 +102,7 @@ pristine.addValidator(
 pristine.addValidator(
   imageUploadForm.querySelector('.text__hashtags'),
   validateUniqueHashtags,
-  'Хэштеги не должнеы повторяться!'
+  'Хэштеги не должны повторяться!'
 );
 
 pristine.addValidator(
@@ -118,3 +117,5 @@ imageUploadForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
   }
 });
+
+initEffect();
