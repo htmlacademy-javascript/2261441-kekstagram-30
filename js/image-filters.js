@@ -59,7 +59,7 @@ const onSliderUpdate = () => {
   setImageStyle();
 };
 
-const createSlidcr = ({ min, max, step }) => {
+const createSlider = ({ min, max, step }) => {
   noUiSlider.create(slider, {
     range: { min, max },
     step,
@@ -107,7 +107,7 @@ const onEffectsChange = (evt) => {
 };
 
 const initEffect = () => {
-  createSlidcr(effectSliderOptions[chosenEffect]);
+  createSlider(effectSliderOptions[chosenEffect]);
   effectsPanel.addEventListener('change', onEffectsChange);
 };
 
