@@ -75,7 +75,7 @@ const createSlider = ({ min, max, step }) => {
   hideSlider();
 };
 
-const updateSllder = ({ min, max, step }) => {
+const updateSlider = ({ min, max, step }) => {
   slider.noUiSlider.updateOptions({
     range: { min, max },
     step,
@@ -87,7 +87,7 @@ const setSlider = () => {
   if (isDefault()) {
     hideSlider();
   } else {
-    updateSllder(effectSliderOptions[chosenEffect]);
+    updateSlider(effectSliderOptions[chosenEffect]);
     showSlider();
   }
 };
