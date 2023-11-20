@@ -1,6 +1,7 @@
-import { createPhotos } from './data.js';
 import { renderGallery } from './gallery.js';
 import './image-upload-form.js';
+import { createLoader, showLoadError } from './data.js';
 
 // Отрисовываем галерею
-renderGallery(createPhotos());
+const loadPictures = createLoader(renderGallery, showLoadError);
+loadPictures();
