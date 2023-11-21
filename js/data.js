@@ -1,4 +1,4 @@
-const REMOVE_MESSAGE_TIMEOUT = 5000;
+const ERROR_MESSAGE_TIMEOUT = 5000;
 
 const body = document.querySelector('body');
 const dataErrorTemplate = document.querySelector('#data-error')
@@ -6,13 +6,13 @@ const dataErrorTemplate = document.querySelector('#data-error')
   .querySelector('.data-error');
 
 const showLoadError = () => {
-  const errorMessage = dataErrorTemplate.cloneNode(true);
-  body.append(errorMessage);
-  setTimeout(() => errorMessage.remove(), REMOVE_MESSAGE_TIMEOUT);
+  const loadErrorMessage = dataErrorTemplate.cloneNode(true);
+  body.append(loadErrorMessage);
+  setTimeout(() => loadErrorMessage.remove(), ERROR_MESSAGE_TIMEOUT);
 };
 
 //Получение данных от сервера
-const createLoader = (onSuccess, onError) => () => fetch(
+const getData = (onSuccess, onError) => () => fetch(
   'https://30.javascript.pages.academy/kekstagram/data',
   {
     method: 'GET',
@@ -33,4 +33,23 @@ const createLoader = (onSuccess, onError) => () => fetch(
     onError(err);
   });
 
-export { createLoader, showLoadError };
+// Отправка данных на сервер
+const sendData = (onSuccess, onFail, dataBody) => {
+  fetch(
+    'https://30.javascript.pages.academy/kekstagram',
+    {
+      method: 'POST',
+      body: dataBody
+    },
+  )
+    .then((response) => {
+      if (response.ok) {
+        onSuccess();
+      } else {
+        onFail();
+      }
+    })
+    .catch(() => onFail());
+};
+
+export { getData, showLoadError, sendData };

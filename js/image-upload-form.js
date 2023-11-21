@@ -1,5 +1,6 @@
 import { resetScale } from './image-scale.js';
 import { initEffect, resetEffect } from './image-filters.js';
+import { sendData } from './data.js';
 
 const COMMENT_MAX_LENGTH = 140;
 const HASHTAGS_MAX_COUNT = 5;
@@ -9,9 +10,17 @@ const imageUploadForm = document.querySelector('.img-upload__form');
 const imageUploadInput = imageUploadForm.querySelector('.img-upload__input');
 const imageEditor = imageUploadForm.querySelector('.img-upload__overlay');
 const imageEditorCloseButton = imageEditor.querySelector('.cancel');
+const imageSubmitButton = imageEditor.querySelector('.img-upload__submit');
 
 const hashtagsInput = imageUploadForm.querySelector('.text__hashtags');
 const commentInput = imageUploadForm.querySelector('.text__description');
+
+const uploadSuccessMessage = document.querySelector('#success')
+  .content
+  .querySelector('.success');
+const uploadErrorMessage = document.querySelector('#error')
+  .content
+  .querySelector('.error');
 
 const hashtagPattern = /^#[a-zа-яё0-9]{1,19}$/i;
 
@@ -111,11 +120,79 @@ pristine.addValidator(
   'Длина комментария не может быть больше 140 символов!'
 );
 
-// Блокировка отправки формы при ошибках
-imageUploadForm.addEventListener('submit', (evt) => {
-  if (!pristine.validate()) {
+// Блокировка кнопки во время отправки формы
+const blockImageSubmitButton = () => {
+  imageSubmitButton.disabled = true;
+  imageSubmitButton.textContent = 'Публикую...';
+};
+
+const unblockImageSubmitButton = () => {
+  imageSubmitButton.disabled = false;
+  imageSubmitButton.textContent = 'Опубликовать';
+};
+
+// Сообщения при отправке формы
+const showUploadSuccess = () => {
+  body.append(uploadSuccessMessage);
+
+  const successButton = uploadSuccessMessage.querySelector('.success__button');
+  successButton.addEventListener('click', onSuccessButtonClick);
+  document.addEventListener('keydown', onDocumentSuccessKeydown);
+};
+
+const showUploadError = () => {
+  body.append(uploadErrorMessage);
+
+  const errorButton = uploadErrorMessage.querySelector('.error__button');
+  errorButton.addEventListener('click', onErrorButtonClick);
+};
+
+const hideUploadSuccess = () => {
+  uploadSuccessMessage.remove();
+};
+
+const hideUploadError = () => {
+  uploadErrorMessage.remove();
+};
+
+function onSuccessButtonClick() {
+  hideUploadSuccess();
+}
+
+function onErrorButtonClick() {
+  hideUploadError();
+}
+
+function onDocumentSuccessKeydown(evt) {
+  if (evt.key === 'Escape') {
     evt.preventDefault();
+    hideUploadSuccess();
   }
-});
+}
+
+// Отправка формы
+const setImageUploadFormSubmit = (onSuccess) => {
+  imageUploadForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    if (pristine.validate()) {
+      blockImageSubmitButton();
+      sendData(
+        () => {
+          onSuccess();
+          unblockImageSubmitButton();
+          showUploadSuccess();
+        },
+        () => {
+          showUploadError();
+          unblockImageSubmitButton();
+        },
+        new FormData(evt.target)
+      );
+    }
+  });
+};
+
+setImageUploadFormSubmit(hideImageEditor);
 
 initEffect();
+
