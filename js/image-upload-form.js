@@ -1,6 +1,7 @@
 import { resetScale } from './image-scale.js';
 import { initEffect, resetEffect } from './image-filters.js';
 import { sendData } from './data.js';
+import { showUploadErrorMessage, showUploadSuccessMessage } from './upload-message.js';
 
 const COMMENT_MAX_LENGTH = 140;
 const HASHTAGS_MAX_COUNT = 5;
@@ -14,13 +15,6 @@ const imageSubmitButton = imageEditor.querySelector('.img-upload__submit');
 
 const hashtagsInput = imageUploadForm.querySelector('.text__hashtags');
 const commentInput = imageUploadForm.querySelector('.text__description');
-
-const uploadSuccessMessage = document.querySelector('#success')
-  .content
-  .querySelector('.success');
-const uploadErrorMessage = document.querySelector('#error')
-  .content
-  .querySelector('.error');
 
 const hashtagPattern = /^#[a-zа-яё0-9]{1,19}$/i;
 
@@ -50,7 +44,8 @@ const hideImageEditor = () => {
 
 function onDocumentKeydown(evt) {
   const isInFocus = (document.activeElement === commentInput || document.activeElement === hashtagsInput);
-  if (evt.key === 'Escape' && !isInFocus) {
+  const isErrorMessageExists = Boolean(document.querySelector('.error'));
+  if (evt.key === 'Escape' && !isInFocus && !isErrorMessageExists) {
     evt.preventDefault();
     hideImageEditor();
   }
@@ -131,45 +126,6 @@ const unblockImageSubmitButton = () => {
   imageSubmitButton.textContent = 'Опубликовать';
 };
 
-// Сообщения при отправке формы
-const showUploadSuccess = () => {
-  body.append(uploadSuccessMessage);
-
-  const successButton = uploadSuccessMessage.querySelector('.success__button');
-  successButton.addEventListener('click', onSuccessButtonClick);
-  document.addEventListener('keydown', onDocumentSuccessKeydown);
-};
-
-const showUploadError = () => {
-  body.append(uploadErrorMessage);
-
-  const errorButton = uploadErrorMessage.querySelector('.error__button');
-  errorButton.addEventListener('click', onErrorButtonClick);
-};
-
-const hideUploadSuccess = () => {
-  uploadSuccessMessage.remove();
-};
-
-const hideUploadError = () => {
-  uploadErrorMessage.remove();
-};
-
-function onSuccessButtonClick() {
-  hideUploadSuccess();
-}
-
-function onErrorButtonClick() {
-  hideUploadError();
-}
-
-function onDocumentSuccessKeydown(evt) {
-  if (evt.key === 'Escape') {
-    evt.preventDefault();
-    hideUploadSuccess();
-  }
-}
-
 // Отправка формы
 const setImageUploadFormSubmit = (onSuccess) => {
   imageUploadForm.addEventListener('submit', (evt) => {
@@ -180,10 +136,10 @@ const setImageUploadFormSubmit = (onSuccess) => {
         () => {
           onSuccess();
           unblockImageSubmitButton();
-          showUploadSuccess();
+          showUploadSuccessMessage();
         },
         () => {
-          showUploadError();
+          showUploadErrorMessage();
           unblockImageSubmitButton();
         },
         new FormData(evt.target)

@@ -3,5 +3,4 @@ import './image-upload-form.js';
 import { getData, showLoadError } from './data.js';
 
 // Отрисовываем галерею
-const loadPictures = getData(renderGallery, showLoadError);
-loadPictures();
+getData(renderGallery, showLoadError);
