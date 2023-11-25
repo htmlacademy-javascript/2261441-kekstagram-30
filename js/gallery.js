@@ -5,6 +5,10 @@ const thumbnailContainer = document.querySelector('.pictures');
 
 // Отрисовка галереи
 const renderGallery = (photos) => {
+  renderThumbnails(photos, thumbnailContainer);
+};
+
+const setGalleryListeners = (photos) => {
   thumbnailContainer.addEventListener('click', (evt) => {
     const thumbnail = evt.target.closest('[data-thumbnail-id]');
 
@@ -19,7 +23,6 @@ const renderGallery = (photos) => {
 
     showPhotoModal(thumbnailPhoto);
   });
-  renderThumbnails(photos, thumbnailContainer);
 };
 
-export { renderGallery };
+export { renderGallery, setGalleryListeners };

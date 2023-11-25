@@ -1,3 +1,6 @@
+import { initFilters } from './filters.js';
+import { setGalleryListeners } from './gallery.js';
+
 const ERROR_MESSAGE_TIMEOUT = 5000;
 
 const body = document.querySelector('body');
@@ -23,6 +26,8 @@ const getData = (onSuccess, onError) => {
     })
     .then((data) => {
       onSuccess(data);
+      setGalleryListeners(data);
+      initFilters(data);
     })
     .catch((err) => {
       onError(err);
