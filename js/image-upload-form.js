@@ -1,5 +1,7 @@
 import { resetScale } from './image-scale.js';
 import { initEffect, resetEffect } from './image-filters.js';
+import { sendData } from './data.js';
+import { showUploadErrorMessage, showUploadSuccessMessage } from './upload-message.js';
 
 const COMMENT_MAX_LENGTH = 140;
 const HASHTAGS_MAX_COUNT = 5;
@@ -9,6 +11,7 @@ const imageUploadForm = document.querySelector('.img-upload__form');
 const imageUploadInput = imageUploadForm.querySelector('.img-upload__input');
 const imageEditor = imageUploadForm.querySelector('.img-upload__overlay');
 const imageEditorCloseButton = imageEditor.querySelector('.cancel');
+const imageSubmitButton = imageEditor.querySelector('.img-upload__submit');
 
 const hashtagsInput = imageUploadForm.querySelector('.text__hashtags');
 const commentInput = imageUploadForm.querySelector('.text__description');
@@ -41,7 +44,8 @@ const hideImageEditor = () => {
 
 function onDocumentKeydown(evt) {
   const isInFocus = (document.activeElement === commentInput || document.activeElement === hashtagsInput);
-  if (evt.key === 'Escape' && !isInFocus) {
+  const isErrorMessageExists = Boolean(document.querySelector('.error'));
+  if (evt.key === 'Escape' && !isInFocus && !isErrorMessageExists) {
     evt.preventDefault();
     hideImageEditor();
   }
@@ -111,11 +115,40 @@ pristine.addValidator(
   'Длина комментария не может быть больше 140 символов!'
 );
 
-// Блокировка отправки формы при ошибках
-imageUploadForm.addEventListener('submit', (evt) => {
-  if (!pristine.validate()) {
+// Блокировка кнопки во время отправки формы
+const blockImageSubmitButton = () => {
+  imageSubmitButton.disabled = true;
+  imageSubmitButton.textContent = 'Публикую...';
+};
+
+const unblockImageSubmitButton = () => {
+  imageSubmitButton.disabled = false;
+  imageSubmitButton.textContent = 'Опубликовать';
+};
+
+// Отправка формы
+const setImageUploadFormSubmit = (onSuccess) => {
+  imageUploadForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
-  }
-});
+    if (pristine.validate()) {
+      blockImageSubmitButton();
+      sendData(
+        () => {
+          onSuccess();
+          unblockImageSubmitButton();
+          showUploadSuccessMessage();
+        },
+        () => {
+          showUploadErrorMessage();
+          unblockImageSubmitButton();
+        },
+        new FormData(evt.target)
+      );
+    }
+  });
+};
+
+setImageUploadFormSubmit(hideImageEditor);
 
 initEffect();
+
