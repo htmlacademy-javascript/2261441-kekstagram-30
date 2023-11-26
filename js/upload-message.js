@@ -21,6 +21,7 @@ const hideMessage = () => {
   const message = document.querySelector('.success') || document.querySelector('.error');
   message.remove();
   document.removeEventListener('keydown', onDocumentKeydown);
+  body.removeEventListener('click', onBodyClick);
 };
 
 function onMessageButtonClick() {

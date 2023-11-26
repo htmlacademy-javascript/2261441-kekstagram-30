@@ -32,7 +32,7 @@ const getData = (onSuccess, onError) => {
 // Отправка данных на сервер
 const sendData = (onSuccess, onFail, dataBody) => {
   fetch(
-    'https://30.javascript.pages.academy/kekstagram',
+    'https://30.javascript.pages.academy/kekstagram/',
     {
       method: 'POST',
       body: dataBody
