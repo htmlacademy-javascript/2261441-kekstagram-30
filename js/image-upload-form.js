@@ -5,11 +5,16 @@ import { showUploadErrorMessage, showUploadSuccessMessage } from './upload-messa
 
 const COMMENT_MAX_LENGTH = 140;
 const HASHTAGS_MAX_COUNT = 5;
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
 const body = document.querySelector('body');
 const imageUploadForm = document.querySelector('.img-upload__form');
 const imageUploadInput = imageUploadForm.querySelector('.img-upload__input');
 const imageEditor = imageUploadForm.querySelector('.img-upload__overlay');
+
+const imagePreview = imageEditor.querySelector('.img-upload__preview img');
+const effectPreviews = imageEditor.querySelectorAll('.effects__preview');
+
 const imageEditorCloseButton = imageEditor.querySelector('.cancel');
 const imageSubmitButton = imageEditor.querySelector('.img-upload__submit');
 
@@ -51,7 +56,21 @@ function onDocumentKeydown(evt) {
   }
 }
 
+// Проверка типа загружаемого файла
+const isValidType = (file) => {
+  const fileName = file.name.toLowerCase();
+  return FILE_TYPES.some((type) => fileName.endsWith(type));
+};
+
 const onImageUploadFormChange = () => {
+  const file = imageUploadInput.files[0];
+
+  if (file && isValidType(file)) {
+    imagePreview.src = URL.createObjectURL(file);
+    effectPreviews.forEach((preview) => {
+      preview.style.backgroundImage = `url('${imagePreview.src}')`;
+    });
+  }
   showImageEditor();
 };
 

@@ -8,7 +8,7 @@ const renderGallery = (photos) => {
   renderThumbnails(photos, thumbnailContainer);
 };
 
-const setGalleryListeners = (photos) => {
+const setGalleryListener = (photos) => {
   thumbnailContainer.addEventListener('click', (evt) => {
     const thumbnail = evt.target.closest('[data-thumbnail-id]');
 
@@ -25,4 +25,4 @@ const setGalleryListeners = (photos) => {
   });
 };
 
-export { renderGallery, setGalleryListeners };
+export { renderGallery, setGalleryListener };
