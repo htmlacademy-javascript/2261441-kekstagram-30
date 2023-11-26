@@ -56,19 +56,13 @@ const debouncedRepaint = debounce(repaint);
 
 const initFilters = (data) => {
   filters.classList.remove('img-filters--inactive');
-  defaultButton.addEventListener('click', (evt) => {
-    setActiveFilter(evt);
-    debouncedRepaint(evt, FilterOptions.DEFAULT, data);
-  });
-  randomButton.addEventListener('click', (evt) => {
-    setActiveFilter(evt);
-    debouncedRepaint(evt, FilterOptions.RANDOM, data);
-  });
-  discussedButton.addEventListener('click', (evt) => {
-    setActiveFilter(evt);
-    debouncedRepaint(evt, FilterOptions.DISCUSSED, data);
-  });
+  filterForm.addEventListener('click', setActiveFilter);
+  defaultButton.addEventListener('click', (evt) =>
+    debouncedRepaint(evt, FilterOptions.DEFAULT, data));
+  randomButton.addEventListener('click', (evt) =>
+    debouncedRepaint(evt, FilterOptions.RANDOM, data));
+  discussedButton.addEventListener('click', (evt) =>
+    debouncedRepaint(evt, FilterOptions.DISCUSSED, data));
 };
-
 
 export { initFilters };
