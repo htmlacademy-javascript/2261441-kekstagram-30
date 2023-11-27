@@ -15,7 +15,6 @@ const photoModalCloseButton = photoModal.querySelector('.big-picture__cancel');
 let commentsShownCounter = 0;
 let comments = [];
 
-// Функция для оформления одного комментария для публикации
 const getComment = ({ avatar, message, name }) => {
   const comment = commentTemplate.cloneNode(true);
 
@@ -26,7 +25,6 @@ const getComment = ({ avatar, message, name }) => {
   return comment;
 };
 
-// Функция для отрисовки комментариев к фото с загрузкой по 5 шт
 const renderComments = () => {
   commentsShownCounter += COMMENTS_DISPLAY_COUNT;
 
@@ -36,16 +34,13 @@ const renderComments = () => {
   } else {
     commentsLoader.classList.remove('hidden');
   }
-
   const fragment = document.createDocumentFragment();
-
   for (let i = 0; i < commentsShownCounter; i++) {
     const comment = getComment(comments[i]);
     fragment.append(comment);
   }
   commentsList.innerHTML = '';
   commentsList.append(fragment);
-
   commentsShownCount.textContent = commentsShownCounter;
   commentsTotalCount.textContent = comments.length;
 };
@@ -61,24 +56,19 @@ const renderPhoto = ({ url, description, likes }) => {
   photoModal.querySelector('.social__caption').textContent = description;
 };
 
-// Открытие модального окна с отрисованной картинкой
 const showPhotoModal = (photos) => {
   photoModal.classList.remove('hidden');
   body.classList.add('modal-open');
-
   document.addEventListener('keydown', onDocumentKeydown);
-
   comments = photos.comments;
   renderPhoto(photos);
   renderComments();
 };
 
-// Закрытие модального окна с картинкой
 const hidePhotoModal = () => {
   photoModal.classList.add('hidden');
   body.classList.remove('modal-open');
   commentsShownCounter = 0;
-
   document.removeEventListener('keydown', onDocumentKeydown);
 };
 
@@ -93,9 +83,7 @@ function onDocumentKeydown(evt) {
   }
 }
 
-// Ставим обработчик на клик по крестику
 photoModalCloseButton.addEventListener('click', onPhotoModalCloseButtonClick);
-
 commentsLoader.addEventListener('click', onCommentsLoaderClick);
 
 export { showPhotoModal };

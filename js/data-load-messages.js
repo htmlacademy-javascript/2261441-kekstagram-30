@@ -1,6 +1,9 @@
-const body = document.querySelector('body');
+const ERROR_MESSAGE_TIMEOUT = 5000;
 
-// Сообщения при отправке формы
+const body = document.querySelector('body');
+const loadErrorMessage = document.querySelector('#data-error')
+  .content
+  .querySelector('.data-error');
 const uploadSuccessMessage = document.querySelector('#success')
   .content
   .querySelector('.success');
@@ -8,30 +11,35 @@ const uploadErrorMessage = document.querySelector('#error')
   .content
   .querySelector('.error');
 
-const showMessage = (message, buttonClass) => {
+const showLoadErrorMessage = () => {
+  body.append(loadErrorMessage);
+  setTimeout(() => loadErrorMessage.remove(), ERROR_MESSAGE_TIMEOUT);
+};
+
+const showUploadMessage = (message, buttonClass) => {
   body.append(message);
   message
     .querySelector(buttonClass)
-    .addEventListener('click', onMessageButtonClick);
+    .addEventListener('click', onUploadMessageButtonClick);
   body.addEventListener('click', onBodyClick);
   document.addEventListener('keydown', onDocumentKeydown);
 };
 
-const hideMessage = () => {
+const hideUploadMessage = () => {
   const message = document.querySelector('.success') || document.querySelector('.error');
   message.remove();
   document.removeEventListener('keydown', onDocumentKeydown);
   body.removeEventListener('click', onBodyClick);
 };
 
-function onMessageButtonClick() {
-  hideMessage();
+function onUploadMessageButtonClick() {
+  hideUploadMessage();
 }
 
 function onDocumentKeydown(evt) {
   if (evt.key === 'Escape') {
     evt.preventDefault();
-    hideMessage();
+    hideUploadMessage();
   }
 }
 
@@ -39,16 +47,16 @@ function onBodyClick(evt) {
   if (evt.target.closest('.success__inner') || evt.target.closest('.error__inner')) {
     return;
   }
-  hideMessage();
+  hideUploadMessage();
 }
 
 const showUploadSuccessMessage = () => {
-  showMessage(uploadSuccessMessage, '.success__button');
+  showUploadMessage(uploadSuccessMessage, '.success__button');
 };
 
 const showUploadErrorMessage = () => {
-  showMessage(uploadErrorMessage, '.error__button');
+  showUploadMessage(uploadErrorMessage, '.error__button');
 };
 
-export { showUploadErrorMessage, showUploadSuccessMessage };
+export { showLoadErrorMessage, showUploadErrorMessage, showUploadSuccessMessage };
 

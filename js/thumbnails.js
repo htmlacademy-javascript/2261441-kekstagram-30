@@ -2,7 +2,6 @@ const thumbnailTemplate = document.querySelector('#picture')
   .content
   .querySelector('.picture');
 
-// Функция для создания одной миниатюры
 const createThumbnail = ({ id, url, description, likes, comments }) => {
   const thumbnail = thumbnailTemplate.cloneNode(true);
   thumbnail.querySelector('.picture__img').src = url;
@@ -14,7 +13,6 @@ const createThumbnail = ({ id, url, description, likes, comments }) => {
   return thumbnail;
 };
 
-// Функция для создания заданного числа миниатюр и их отображения на странице
 const renderThumbnails = (photos, container) => {
   const fragment = document.createDocumentFragment();
   photos.forEach((photo) => {

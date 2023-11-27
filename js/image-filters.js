@@ -33,10 +33,10 @@ const effectValueInput = sliderContainer.querySelector('.effect-level__value');
 
 let chosenEffect = Effect.DEFAULT;
 
-const isDefault = () => chosenEffect === Effect.DEFAULT;
+const isDefaultEffect = () => chosenEffect === Effect.DEFAULT;
 
 const setImageStyle = () => {
-  if (isDefault()) {
+  if (isDefaultEffect()) {
     image.style.filter = null;
     return;
   }
@@ -84,7 +84,7 @@ const updateSlider = ({ min, max, step }) => {
 };
 
 const setSlider = () => {
-  if (isDefault()) {
+  if (isDefaultEffect()) {
     hideSlider();
   } else {
     updateSlider(effectSliderOptions[chosenEffect]);
