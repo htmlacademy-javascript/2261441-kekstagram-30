@@ -38,6 +38,10 @@ const setActiveFilter = (evt) => {
   evt.target.classList.add('img-filters__button--active');
 };
 
+const onFilterClick = (evt) => {
+  setActiveFilter(evt);
+};
+
 const repaintGallery = (evt, filter, data) => {
   if (currentFilter !== filter || filter === FilterOptions.RANDOM) {
     const filteredData = filterHandlers[filter](data);
@@ -52,11 +56,14 @@ const debouncedRepaint = debounce(repaintGallery);
 
 const initFilters = (data) => {
   filters.classList.remove('img-filters--inactive');
-  filterForm.addEventListener('click', setActiveFilter);
+  filterForm.addEventListener('click', onFilterClick);
+
   defaultButton.addEventListener('click', (evt) =>
     debouncedRepaint(evt, FilterOptions.DEFAULT, data));
+
   randomButton.addEventListener('click', (evt) =>
     debouncedRepaint(evt, FilterOptions.RANDOM, data));
+
   discussedButton.addEventListener('click', (evt) =>
     debouncedRepaint(evt, FilterOptions.DISCUSSED, data));
 };
