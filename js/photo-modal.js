@@ -1,3 +1,5 @@
+import { isEscapeKey } from './utils.js';
+
 const COMMENTS_DISPLAY_COUNT = 5;
 
 const photoModal = document.querySelector('.big-picture');
@@ -77,7 +79,7 @@ const onPhotoModalCloseButtonClick = () => {
 };
 
 function onDocumentKeydown(evt) {
-  if (evt.key === 'Escape') {
+  if (isEscapeKey(evt)) {
     evt.preventDefault();
     hidePhotoModal();
   }

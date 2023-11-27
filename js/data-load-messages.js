@@ -1,3 +1,5 @@
+import { isEscapeKey } from './utils';
+
 const ERROR_MESSAGE_TIMEOUT = 5000;
 
 const body = document.querySelector('body');
@@ -37,7 +39,7 @@ function onUploadMessageButtonClick() {
 }
 
 function onDocumentKeydown(evt) {
-  if (evt.key === 'Escape') {
+  if (isEscapeKey(evt)) {
     evt.preventDefault();
     hideUploadMessage();
   }

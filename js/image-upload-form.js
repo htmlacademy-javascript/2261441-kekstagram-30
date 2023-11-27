@@ -2,6 +2,7 @@ import { resetScale } from './image-scale.js';
 import { initEffect, resetEffect } from './image-filters.js';
 import { sendData } from './data.js';
 import { showUploadErrorMessage, showUploadSuccessMessage } from './data-load-messages.js';
+import { isEscapeKey } from './utils.js';
 
 const COMMENT_MAX_LENGTH = 140;
 const HASHTAGS_MAX_COUNT = 5;
@@ -49,7 +50,7 @@ const hideImageEditor = () => {
 function onDocumentKeydown(evt) {
   const isTextInputInFocus = document.activeElement === commentInput || document.activeElement === hashtagsInput;
   const isErrorMessageShown = Boolean(document.querySelector('.error'));
-  if (evt.key === 'Escape' && !isTextInputInFocus && !isErrorMessageShown) {
+  if (isEscapeKey(evt) && !isTextInputInFocus && !isErrorMessageShown) {
     evt.preventDefault();
     hideImageEditor();
   }
