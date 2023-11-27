@@ -1,7 +1,7 @@
 import { resetScale } from './image-scale.js';
 import { initEffect, resetEffect } from './image-filters.js';
 import { sendData } from './data.js';
-import { showUploadErrorMessage, showUploadSuccessMessage } from './upload-message.js';
+import { showUploadErrorMessage, showUploadSuccessMessage } from './data-load-messages.js';
 
 const COMMENT_MAX_LENGTH = 140;
 const HASHTAGS_MAX_COUNT = 5;
@@ -30,7 +30,6 @@ const pristine = new Pristine(imageUploadForm, {
   errorTextTag: 'p'
 });
 
-
 const showImageEditor = () => {
   imageEditor.classList.remove('hidden');
   body.classList.add('modal-open');
@@ -48,16 +47,15 @@ const hideImageEditor = () => {
 };
 
 function onDocumentKeydown(evt) {
-  const isInFocus = (document.activeElement === commentInput || document.activeElement === hashtagsInput);
-  const isErrorMessageExists = Boolean(document.querySelector('.error'));
-  if (evt.key === 'Escape' && !isInFocus && !isErrorMessageExists) {
+  const isTextInputInFocus = document.activeElement === commentInput || document.activeElement === hashtagsInput;
+  const isErrorMessageShown = Boolean(document.querySelector('.error'));
+  if (evt.key === 'Escape' && !isTextInputInFocus && !isErrorMessageShown) {
     evt.preventDefault();
     hideImageEditor();
   }
 }
 
-// Проверка типа загружаемого файла
-const isValidType = (file) => {
+const isValidFileType = (file) => {
   const fileName = file.name.toLowerCase();
   return FILE_TYPES.some((type) => fileName.endsWith(type));
 };
@@ -65,7 +63,7 @@ const isValidType = (file) => {
 const onImageUploadFormChange = () => {
   const file = imageUploadInput.files[0];
 
-  if (file && isValidType(file)) {
+  if (file && isValidFileType(file)) {
     imagePreview.src = URL.createObjectURL(file);
     effectPreviews.forEach((preview) => {
       preview.style.backgroundImage = `url('${imagePreview.src}')`;
@@ -100,7 +98,6 @@ const validateHashtags = (string) => {
   return true;
 };
 
-// Проверка на одинаковые элементы в массиве
 const validateUniqueHashtags = (string) => {
   const hashtags = normalizeHashtags(string);
   const lowerCaseHashtags = hashtags.map((hashtag) => hashtag.toLowerCase());
@@ -134,7 +131,6 @@ pristine.addValidator(
   'Длина комментария не может быть больше 140 символов!'
 );
 
-// Блокировка кнопки во время отправки формы
 const blockImageSubmitButton = () => {
   imageSubmitButton.disabled = true;
   imageSubmitButton.textContent = 'Публикую...';
@@ -145,7 +141,6 @@ const unblockImageSubmitButton = () => {
   imageSubmitButton.textContent = 'Опубликовать';
 };
 
-// Отправка формы
 const setImageUploadFormSubmit = (onSuccess) => {
   imageUploadForm.addEventListener('submit', (evt) => {
     evt.preventDefault();

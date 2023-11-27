@@ -1,15 +1,3 @@
-const ERROR_MESSAGE_TIMEOUT = 5000;
-
-const body = document.querySelector('body');
-const loadErrorMessage = document.querySelector('#data-error')
-  .content
-  .querySelector('.data-error');
-
-const showLoadError = () => {
-  body.append(loadErrorMessage);
-  setTimeout(() => loadErrorMessage.remove(), ERROR_MESSAGE_TIMEOUT);
-};
-
 //Получение данных от сервера
 const getData = (onSuccess, onError) => {
   fetch(
@@ -48,4 +36,4 @@ const sendData = (onSuccess, onFail, dataBody) => {
     .catch(() => onFail());
 };
 
-export { getData, showLoadError, sendData };
+export { getData, sendData };
